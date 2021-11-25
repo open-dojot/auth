@@ -46,6 +46,9 @@ emailTLS = (os.environ.get("AUTH_EMAIL_TLS", "true") in
             ['true', 'True', 'TRUE'])
 emailUsername = os.environ.get("AUTH_EMAIL_USER", "")
 emailPasswd = os.environ.get("AUTH_EMAIL_PASSWD", "")
+# Whether to enable authentication or not for SMTP server
+emailServerAuth = (os.environ.get("AUTH_EMAIL_SERVER_AUTHENTICATION", "true") in
+                   ['true', 'True', 'TRUE'])
 
 # if you are using a front end with Auth,
 # define this link to point to the password reset view on you FE
