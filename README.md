@@ -80,6 +80,7 @@ environment.
 | AUTH_EMAIL_PASSWD | SMTP password. | empty string | string
 | AUTH_EMAIL_PORT | SMTP server port. | 587 | number
 | AUTH_EMAIL_TLS | Whether to enable TLS or not for SMTP server. | True | boolean
+| AUTH_EMAIL_SERVER_AUTHENTICATION | Whether to enable authentication or not for SMTP server. | True | boolean
 | AUTH_EMAIL_USER | SMTP user. | empty string | string
 | AUTH_KONG_URL | Kong location (If set to `DISABLED` Auth won´t try to configure Kong and will generate secrets for the JWT tokens by itself). | http://kong:8001 | hostname/IP:port or DISABLE
 | AUTH_PASSWD_BLACKLIST | File of blacklisted passwords. | password_blacklist.txt | string
