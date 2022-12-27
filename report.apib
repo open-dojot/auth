@@ -1,0 +1,174 @@
+FORMAT: 1A
+
+# PY-RBAC PDP API
+
+Endpoint to easily generate policies reports
+
+# Group Reports
+
+## User direct permissions [/pap/user/{user}/directpermissions]
+
++ Parameters
+    + user: testadm (required, string) - user being requested.
+
+
+### Retrieve user direct permissions [GET]
+
++ Response 200 (application/json)
+
+            {
+                "permissions": [
+                    {
+                        "id" : 130,
+                        "path" : "/exceptional/path\\*",
+                        "method" : "POST|PUT|DELETE",
+                        "permission" : "permit"
+                    },
+                    {
+                        "id" : 136,
+                        "path" : "/cantaccess",
+                        "method" : "\\*",
+                        "permission" : "deny"
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No user found with tihs username or ID"
+            }
+
+
+## All user permissions [/pap/user/{user}/allpermissions]
+
++ Parameters
+    + user: testadm (required, string) - user being requested.
+
+### Retrieve all user permissions [GET]
+
++ Response 200 (application/json)
+
+            {
+                "permissions": [
+                    {
+                        "id" : 131,
+                        "path" : "/devices/info/\\*",
+                        "method" : "POST|PUT|DELETE",
+                        "permission" : "permit"
+                    },
+                    {
+                        "id" : 132,
+                        "path" : "/auth/user",
+                        "method" : "\\*",
+                        "permission" : "deny"
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No user found with tihs username or ID"
+            }
+
+
+## User groups [/pap/user/{user}/groups]
+
++ Parameters
+    + user: testadm (required, string) - user being requested.
+
+### Retrieve all user groups [GET]
+
++ Response 200 (application/json)
+
+            {
+                "groups": [
+                {
+                    "id" : 3,
+                    "name" : "group1"
+                },
+                {
+                    "id" : 4,
+                    "name" : "testadm"
+                }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No user found with tihs username or ID"
+            }
+
+
+## Group permissions [/pap/group/{group}/permissions]
++ Parameters
+    + group: users (required, string) - user being requested.
+
+
+### Retrieve all group permissions [GET]
+
++ Response 200 (application/json)
+
+            {
+                "permissions": [
+                    {
+                        "id" : 131,
+                        "path" : "/devices/info/\\*",
+                        "method" : "POST|PUT|DELETE",
+                        "permission" : "permit"
+                    },
+                    {
+                        "id" : 132,
+                        "path" : "/auth/user",
+                        "method" : "\\*",
+                        "permission" : "deny"
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No group found with this name or ID"
+            }
+
+
+## Group users [/pap/group/{group}/users]
+
++ Parameters
+    + group: users (required, string) - user being requested.
+
+### Retrieve all users from a group [GET]
++ Response 200 (application/json)
+
+            {
+                "users": [
+                    {
+                        "id" : 3252352,
+                        "name" : "Alexandre Vasconcellos",
+                        "email" : "alex@noemai.com",
+                        "username": "aexv",
+                        "service": "user"
+                    },
+                    {
+                        "id" : 1124235532,
+                        "name" : "John Wayne",
+                        "email" : "wayne@company.com",
+                        "username": "johnw",
+                        "service": "user"
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No group found with this name or ID"
+            }

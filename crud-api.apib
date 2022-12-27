@@ -1,0 +1,309 @@
+FORMAT: 1A
+
+# PY-RBAC CRUD API
+
+Endpoints to perform permissions, groups and profiles management
+
+# Group CRUD Permissions and Group
+
+## Permissions creation and search [/pap/permission]
+
+### Create a new permission [POST]
+Notice that regular expressions can be used on the 'path' and 'method' fields,
+and all slashes that serve to escape some characters ('*', in the example) must
+also be escaped
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
+    + Body
+
+            {
+                "path" : "/devices/info/\\*",
+                "method" : "POST|PUT|DELETE",
+                "permission" : "permit",
+                "name": "device_write_operations"
+            }
+
++ Response 200 (application/json)
+
+            {
+                "status": 200,
+                "id": 131
+            }
+
+### Search permission [GET /pap/permission?{path,method,permission,type}]
+
++ Parameters
+    + path: \/devices\/info (optional, string) - a path string.
+    + method: POST (optional, enum) - one HTTP method.
+    + permission: permit (optional, enum) - "permit" or "deny".
+    + type: api (optional, enum) - "api" or "system"
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+ 
+            {
+                "permissions": [
+                    {
+                            "id" : 131,
+                            "path" : "/devices/info/\\*",
+                            "method" : "POST|PUT|DELETE",
+                            "permission" : "permit",
+                            "type": "api"
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No permission found with these filters"
+            }
+
+
+## Permissions management [/pap/permission/{id}]
++ Parameters
+    + id: 1 (required, integer) - The permission ID
+
+### Get a permission [GET]
+
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+
+            {
+                "id" : 131,
+                "path" : "/devices/info/\\*",
+                "method" : "POST|PUT|DELETE",
+                "permission" : "permit",
+                "type": "api"
+            }
+
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No permission found with this ID"
+            }
+
+
+### Update a permission [PUT]
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
+    + Body
+
+            {
+                "path" : "/devices/info/\\*",
+                "method" : "POST|PUT|DELETE",
+                "permission" : "permit",
+                "name": "sample_permission"
+            }
+
++ Response 200 (application/json)
+
+            {
+                "status": 200,
+                "message": "ok"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No permission with found this ID"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No permission with found this ID"
+            }
++ Response 405 (application/json)
+
+            {
+                "status": 405,
+                "message": "Can't edit a system permission"
+            }
+
+### Remove a permission [DELETE]
+
++ Request
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+
+            {
+                "status": 200,
+                "message": "ok"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No permission found with this ID"
+            }
++ Response 405 (application/json)
+
+            {
+                "status": 405,
+                "message": "Can't delete a system permission"
+            }
+
+## Group creation [/pap/group]
+### Create a new group [POST]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
+    + Body
+
+            {
+                "name" : "group1",
+                "description" : "a fine group"
+            }
+
++ Response 200 (application/json)
+
+            {
+                "status": 200,
+                "id": 3
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "Group named group1 already exists"
+            }
+
+
+### Search Groups [GET /pap/group?name={name}]
+
++ Parameters
+    + name: testadm (optional, string) - a group name, or part of a group name.
+
++ Response 200 (application/json)
+
+            {
+                "groups": [
+                    {
+                        "id" : 3,
+                        "name" : "testadm",
+                        "description" : "Full privilege group"
+                    }
+                ]
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No group found with these filters"
+            }
+
+
+## Group management [/pap/group/{id}]
+
++ Parameters
+
+    + id: 1 (required, integer) - group ID
+
+### Get a group [GET]
+
++ Response 200 (application/json)
+
+            {
+                "id" : 3,
+                "name" : "group1",
+                "description" : null
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No group found with this ID"
+            }
+
+### Update a group [PUT]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
+    + Body
+
+            {
+                "name": "testadm",
+                "description" : "projectX"
+            }
+
++ Response 200 (application/json)
+
+            {
+                "status": 200,
+                "message": "ok"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No group found with this ID"
+            }
+
++ Response 405 (application/json)
+
+            {
+                "status": 405,
+                "message": "Can't edit admin group"
+            }
+
+### Remove a group [DELETE]
++ Request (application/json)
+    + Headers
+
+            Authorization: Bearer JWT
+
++ Response 200 (application/json)
+
+            {
+                "status": 200,
+                "message": "ok"
+            }
+
++ Response 404 (application/json)
+
+            {
+                "status": 404,
+                "message": "No group found with this ID"
+            }
+
++ Response 405 (application/json)
+
+            {
+                "status": 405,
+                "message": "Can't delete admin group""
+            }
